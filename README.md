@@ -1,3 +1,9 @@
+Part B pass 3 out of 3 tests, screen shot is shown below
+
+![image](https://github.com/user-attachments/assets/f29f3925-2d72-4e26-9e1d-4f7784b75144)
+
+
+
 Part C
 
 In addition to the Transparent and UUPS proxy patterns, one noteworthy alternative is the Beacon proxy. In this model, the implementation address is stored in a separate “Beacon” contract rather than in the proxy itself. When the proxy receives a function call, it first queries the Beacon for the current implementation address, then delegates all calls to that address. Upgrades become a matter of updating the implementation address inside the Beacon, which means multiple proxies can share the same Beacon and upgrade logic in tandem. This centralization of the implementation address in the Beacon can simplify versioning and coordination if many proxies rely on the same code.
