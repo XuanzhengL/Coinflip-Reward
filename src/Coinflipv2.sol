@@ -4,19 +4,22 @@ pragma solidity ^0.8.28;
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "./DauphineToken.sol"; //Import the DauphineToken contract 
+
 
 error SeedTooShort();
 
 
 contract CoinflipV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
-
     string public seed;
+    DauphineToken public dauphineToken;//Define the DauphineToken contract
 
     function initialize(address newOwner) public initializer {
         __UUPSUpgradeable_init();
         __Ownable_init(newOwner);
 
         seed = "It is a good practice to rotate seeds often in gambling";
+        dauphineToken = DauphineToken(tokenAddress);//Initialize the DauphineToken contract
     }
 
     function _authorizeUpgrade(address newImplementation)
@@ -32,6 +35,7 @@ contract CoinflipV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
                 return false;
             }
         }
+        RewardUser(msg.sender); //Reward the user with Dauphine tokens
         return true;
     }
 
@@ -70,5 +74,8 @@ contract CoinflipV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             }
         }
         return results;
+    }
+    function RewardUser(address winner) internal {
+        dauphineToken.mint(winner, 5 * 1e18); //Mint 5 Dauphine tokens to the winner
     }
 }
